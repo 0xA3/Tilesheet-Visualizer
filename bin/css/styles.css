@@ -1,0 +1,38 @@
+body {
+  margin: 0;
+  color: #263238;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 12px;
+}
+
+.ui {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+}
+
+.ui > div {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.ui > div > div {
+  padding: 10px 10px;
+}
+
+.ui > div > div > span {
+  padding-right: 10px;
+}
+
+.closebutton {
+  font-weight: bold;
+  padding: 1px 4px;
+}
+
+.dropzone {
+  border-radius: 10px;
+  border: 4px dashed #c9c9c9;
+}
+/*# sourceMappingURL=styles.css.map */

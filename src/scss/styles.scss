@@ -1,0 +1,33 @@
+@import "colors";
+
+body {
+	margin: 0;
+	color: $text-color;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 12px;
+}
+
+.ui {
+	display: flex;
+	justify-content: space-around;
+	> div {
+		padding-top: 10px;
+		padding-bottom: 10px;
+		> div {
+			padding: 10px 10px;
+			> span {
+				padding-right: 10px;
+			}
+		}
+	}
+}
+
+.closebutton {
+	font-weight: bold;
+	padding: 1px 4px;
+}
+
+.dropzone {
+	border-radius: 10px;
+	border: 4px dashed #c9c9c9;
+  }
