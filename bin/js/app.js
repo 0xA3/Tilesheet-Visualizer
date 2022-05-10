@@ -131,6 +131,7 @@ function Main_closeImage(e) {
 function Main_readMap(file) {
 	let reader = new FileReader();
 	reader.onload = function(e) {
+		Main_mapFilename.innerHTML = file.name;
 		xa3_HtmlUtils.hide(Main_mapDrop);
 		xa3_HtmlUtils.show(Main_mapFile);
 		Main_createMapAreas(e.target.result);

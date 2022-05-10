@@ -152,6 +152,7 @@ function closeImage( e:Event ) {
 function readMap( file:File ) {
 	final reader = new FileReader();
 	reader.onload = e -> {
+		mapFilename.innerHTML = file.name;
 		mapDrop.hide();
 		mapFile.show();
 		createMapAreas( e.target.result );
