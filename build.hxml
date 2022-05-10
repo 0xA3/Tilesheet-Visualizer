@@ -7,4 +7,4 @@
 -debug
 -dce full
 -main Main
---js bin/js/app.js
+--js docs/js/app.js

@@ -3,7 +3,7 @@
 		{
 			"format": "expanded",
 			"extensionName": ".css",
-			"savePath": "/bin/css"
+			"savePath": "/docs/css"
 		}
 	],
 	"editor.codeActionsOnSave": {
