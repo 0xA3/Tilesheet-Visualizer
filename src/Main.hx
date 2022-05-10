@@ -17,10 +17,12 @@ var imageDrop:Element;
 var imageFile:Element;
 var imageFilename:Element;
 var imageClose:Element;
+var imageView:Element;
 var mapDrop:Element;
 var mapFile:Element;
 var mapFilename:Element;
 var mapClose:Element;
+var mapView:Element;
 
 function main() {
 	
@@ -29,10 +31,12 @@ function main() {
 	imageFile = e( "image_file" );
 	imageFilename = e( "image_filename" );
 	imageClose = e( "image_close" );
+	imageView = e( "image_view" );
 	mapDrop = e( "map_drop" );
 	mapFile = e( "map_file" );
 	mapFilename = e( "map_filename" );
 	mapClose = e( "map_close" );
+	mapView = e( "map_view" );
 	
 	final fakeImageInput = document.createInputElement();
 	fakeImageInput.type = "file";
@@ -46,7 +50,7 @@ function main() {
 	
 	final fakeMapInput = document.createInputElement();
 	fakeMapInput.type = "file";
-	fakeMapInput.accept = "text/json";
+	fakeMapInput.accept = "application/json";
 	fakeMapInput.multiple = false;
 	
 	fakeMapInput.addEventListener( 'change', () -> {
@@ -65,9 +69,10 @@ function main() {
 	mapDrop.addEventListener( 'dragenter', preventDefault, false );
 	mapDrop.addEventListener( 'dragleave', preventDefault, false );
 	mapDrop.addEventListener( 'dragover', preventDefault, false );
-	mapDrop.addEventListener( 'drop', handleImageDrop, false);
+	mapDrop.addEventListener( 'drop', handleMapDrop, false);
 
 	imageClose.addEventListener( 'click', closeImage );
+	mapClose.addEventListener( 'click', closeMap );
 
 }
 
@@ -91,9 +96,16 @@ function handleImageFiles( fileList:FileList ) {
 	}
 }
 
+function handleMapDrop( e:DragEvent ) {
+	final dt = e.dataTransfer;
+	final files = dt.files;
+	if( files.length > 0 ) handleJsonFiles( files );
+	preventDefault( e );
+}
+
 function handleJsonFiles( fileList:FileList ) {
 	if( fileList.length > 0 ) {
-		if( validateJson( fileList[0] )) readJson( fileList[0] );
+		if( validateJson( fileList[0] )) readMap( fileList[0] );
 	}
 }
 
@@ -107,7 +119,7 @@ function validateImage( image:File ) {
 }
 
 function validateJson( file:File ) {
-	var validTypes = ['text/json'];
+	var validTypes = ['application/json'];
 	if( !validTypes.contains( file.type )) {
 		Browser.window.alert( 'Invalid File Type: ${file.type}' );
 		return false;
@@ -118,7 +130,7 @@ function validateJson( file:File ) {
 function readImage( image:File ) {
 	final img = document.createImageElement();
 	img.name = image.name;
-	viewRegion.appendChild( img );
+	imageView.appendChild( img );
 	
 	final reader = new FileReader();
 	reader.onload = e -> {
@@ -131,21 +143,61 @@ function readImage( image:File ) {
 }
 
 function closeImage( e:Event ) {
-	for( child in viewRegion.children ) {
-		viewRegion.removeChild( child );
-	}
+	imageView.innerHTML = "";
 	imageDrop.show();
 	imageFile.hide();
+	closeMap( e );
 }
 
-function readJson( file:File ) {
-
+function readMap( file:File ) {
 	final reader = new FileReader();
 	reader.onload = e -> {
-		trace( e.target.result );
 		mapDrop.hide();
 		mapFile.show();
+		createMapAreas( e.target.result );
 	}
 	reader.readAsText( file );
 }
 
+function closeMap( e:Event ) {
+	mapView.innerHTML = "";
+	mapDrop.show();
+	mapFile.hide();
+}
+
+function createMapAreas( mapFile:String ) {
+	final parsedMap = haxe.Json.parse( mapFile );
+	if( parsedMap.frames == null ) {
+		Browser.window.alert( 'Invalid Map' );
+		return;
+	}
+
+	final map = parsedMap.frames;
+	final fields = Reflect.fields( map );
+	for( field in fields ) {
+		final value:TilemapDataset = Reflect.field( map, field );
+		final frame = value.frame;
+		mapView.innerHTML += '<div class="map-area" style="left:${frame.x}px;top:${frame.y}px;width:${frame.w}px; height:${frame.h}px"><span class="area-name">$field</span></div>';
+	}
+}
+
+typedef TilemapDataset = {
+	frame:{
+		x:Int,
+		y:Int,
+		w:Int,
+		h:Int
+	},
+	rotated:Bool,
+	trimmed:Bool,
+	spriteSourceSize:{
+		x:Int,
+		y:Int,
+		w:Int,
+		h:Int
+	},
+	sourceSize:{
+		w:Int,
+		h:Int
+	}
+}

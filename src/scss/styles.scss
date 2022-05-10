@@ -26,8 +26,21 @@ body {
 	font-weight: bold;
 	padding: 1px 4px;
 }
-
 .dropzone {
 	border-radius: 10px;
 	border: 4px dashed #c9c9c9;
-  }
+}
+#zerozero {
+	position: relative;
+}
+.absolute {
+	position: absolute;
+}
+.map-area {
+	position: absolute;
+	border: 1px dashed rgba($color: #d0d0d0, $alpha: 0.5);
+	> .area-name {
+		background-color: rgba($color: #d0d0d0, $alpha: 0.5);
+		padding: 1px 4px;
+	}
+}

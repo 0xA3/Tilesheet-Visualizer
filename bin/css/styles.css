@@ -35,4 +35,22 @@ body {
   border-radius: 10px;
   border: 4px dashed #c9c9c9;
 }
+
+#zerozero {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.map-area {
+  position: absolute;
+  border: 1px dashed rgba(208, 208, 208, 0.5);
+}
+
+.map-area > .area-name {
+  background-color: rgba(208, 208, 208, 0.5);
+  padding: 1px 4px;
+}
 /*# sourceMappingURL=styles.css.map */
